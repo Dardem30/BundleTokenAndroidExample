@@ -1,6 +1,5 @@
 package com.example.roman.myretrofitexample;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,25 +11,21 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MainPageActivity extends AppCompatActivity {
     private Gson gson=new GsonBuilder().create();
-    private Retrofit retrofit=new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create(gson))
-            .baseUrl("http://10.0.2.2:8080")
-            .build();
-    private Link link=retrofit.create(Link.class);
+    private Link link= ServiceGenerator.createService(Link.class);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        System.out.println(DataManager.getInstance().getPreferencesManager().getAuthToken());
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,15 +36,17 @@ public class MainPageActivity extends AppCompatActivity {
         });
         System.out.println(getIntent().getSerializableExtra("username"));
         Bundle bundle=getIntent().getExtras();
-        Call<UserDto> call=link.userByUsername(bundle.getString("username"),bundle.getString("token"));
+        Call<UserDto> call=link.userByUsername(bundle.getString("username"));
         call.enqueue(new Callback<UserDto>() {
             @Override
-            public void onResponse(Response<UserDto> response, Retrofit retrofit) {
-                if(response.isSuccess()){
+            public void onResponse(Call<UserDto> call, Response<UserDto> response) {
+                if(response.isSuccessful()){
                     Toast.makeText(MainPageActivity.this, response.body().password, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainPageActivity.this, "aeeeeeeeeeeeeeeeeeeeeee", Toast.LENGTH_LONG).show();
                     System.out.println(response.body().password);
+                    System.out.println("aeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
                 }else{
-                    System.out.println(response.isSuccess());
+                    System.out.println(response.isSuccessful());
                     System.out.println(response.errorBody());
                     System.out.println(response.message());
                     System.out.println(response.code());
@@ -58,8 +55,8 @@ public class MainPageActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
-                Toast.makeText(MainPageActivity.this, "error", Toast.LENGTH_LONG).show();
+            public void onFailure(Call<UserDto> call, Throwable t) {
+
             }
         });
     }

@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -13,19 +12,16 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+
 
 public class MainActivity extends AppCompatActivity {
 private Gson gson=new GsonBuilder().create();
-private Retrofit retrofit=new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create(gson))
-        .baseUrl("http://10.0.2.2:8080")
-        .build();
 EditText password,username;
-private Link link=retrofit.create(Link.class);
+private Link link= ServiceGenerator.createService(Link.class);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +35,10 @@ private Link link=retrofit.create(Link.class);
         Call<String> call=link.auth(userDto);
         call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Response<String> response, Retrofit retrofit) {
-                if (response.isSuccess()){
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()){
                     Toast.makeText(MainActivity.this, response.body(), Toast.LENGTH_LONG).show();
+                    DataManager.getInstance().getPreferencesManager().setAuthToken(response.headers().get("access-token"));
                     Intent intent=new Intent("com.example.roman.myretrofitexample.MainPageActivity");
                     intent.putExtra("username",username.getText().toString());
                     intent.putExtra("token",response.headers().get("access-token"));
@@ -52,11 +49,11 @@ private Link link=retrofit.create(Link.class);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
+                System.out.println(t.getMessage());
                 System.out.println(t.getLocalizedMessage());
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                System.out.println(t.getCause());
             }
-
         });
     }
 }
