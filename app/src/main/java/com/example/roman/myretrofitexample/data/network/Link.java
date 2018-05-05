@@ -1,11 +1,10 @@
-package com.example.roman.myretrofitexample;
+package com.example.roman.myretrofitexample.data.network;
 
-import android.support.v4.media.AudioAttributesCompat;
+import com.example.roman.myretrofitexample.model.UserDto;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 

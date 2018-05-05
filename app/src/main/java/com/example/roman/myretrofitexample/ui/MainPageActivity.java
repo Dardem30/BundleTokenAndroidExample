@@ -1,4 +1,4 @@
-package com.example.roman.myretrofitexample;
+package com.example.roman.myretrofitexample.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +8,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.roman.myretrofitexample.data.managers.DataManager;
+import com.example.roman.myretrofitexample.data.network.Link;
+import com.example.roman.myretrofitexample.R;
+import com.example.roman.myretrofitexample.data.network.ServiceGenerator;
+import com.example.roman.myretrofitexample.model.UserDto;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -17,23 +22,14 @@ import retrofit2.Response;
 
 
 public class MainPageActivity extends AppCompatActivity {
-    private Gson gson=new GsonBuilder().create();
     private Link link= ServiceGenerator.createService(Link.class);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        System.out.println(DataManager.getInstance().getPreferencesManager().getAuthToken());
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+    }
+
+    public void getPassword(View view) {
         System.out.println(getIntent().getSerializableExtra("username"));
         Bundle bundle=getIntent().getExtras();
         Call<UserDto> call=link.userByUsername(bundle.getString("username"));
@@ -60,5 +56,4 @@ public class MainPageActivity extends AppCompatActivity {
             }
         });
     }
-
 }

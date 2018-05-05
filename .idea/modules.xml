@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MyRetrofitExample.iml" filepath="$PROJECT_DIR$/MyRetrofitExample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/BundleTokenAndroidExample.iml" filepath="$PROJECT_DIR$/.idea/BundleTokenAndroidExample.iml" />
+      <module fileurl="file://C:\Users\Roman\.AndroidStudio3.0\BundleTokenAndroidExample\MyRetrofitExample.iml" filepath="C:\Users\Roman\.AndroidStudio3.0\BundleTokenAndroidExample\MyRetrofitExample.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
