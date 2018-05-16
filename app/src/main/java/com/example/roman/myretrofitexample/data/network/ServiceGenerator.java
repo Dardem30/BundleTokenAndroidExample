@@ -18,7 +18,7 @@ public class ServiceGenerator {
                 .create();
         Retrofit.Builder sBuilder =
                 new Retrofit.Builder()
-                        .baseUrl("http://10.0.2.2:8080")
+                        .baseUrl("https://socialnetwork2.herokuapp.com")
                         .addConverterFactory(GsonConverterFactory.create(gson));
         Retrofit retrofit = sBuilder
                 .client(httpClient.build())

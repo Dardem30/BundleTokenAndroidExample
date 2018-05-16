@@ -20,7 +20,7 @@ public class HeaderInterceptor implements Interceptor {
         Request original = chain.request();
         System.out.println(original.url());
         Request.Builder requestBuilder;
-        if(original.url().equals("http://10.0.2.2:8080/auth")){
+        if(original.url().equals("http://10.0.2.2:8080/auth") || original.url().equals("http://10.0.2.2:8080/signUp")){
             requestBuilder = original.newBuilder();
         }else {
             requestBuilder = original.newBuilder()

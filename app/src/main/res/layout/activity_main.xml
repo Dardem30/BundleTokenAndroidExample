@@ -39,9 +39,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="login"
-            android:text="Button"
+            android:text="login"
             tools:layout_editor_absoluteX="2dp"
             tools:layout_editor_absoluteY="156dp" />
+
+        <Button
+            android:id="@+id/buttonReg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="signUp"
+            android:onClick="toSignUp"/>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

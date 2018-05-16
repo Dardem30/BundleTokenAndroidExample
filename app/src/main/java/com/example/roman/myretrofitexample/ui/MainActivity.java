@@ -8,16 +8,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.roman.myretrofitexample.data.managers.DataManager;
+import com.example.roman.myretrofitexample.data.managers.PreferencesManager;
 import com.example.roman.myretrofitexample.data.network.Link;
 import com.example.roman.myretrofitexample.R;
 import com.example.roman.myretrofitexample.data.network.ServiceGenerator;
+import com.example.roman.myretrofitexample.model.User;
 import com.example.roman.myretrofitexample.model.UserDto;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
-
-import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,6 +25,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 EditText password,username;
+PreferencesManager preferencesManager=DataManager.getInstance().getPreferencesManager();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,14 +41,15 @@ EditText password,username;
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()){
-                    Toast.makeText(MainActivity.this, response.body(), Toast.LENGTH_LONG).show();
-                    DataManager.getInstance().getPreferencesManager().setAuthToken(response.headers().get("access-token"));
+                    Toast.makeText(MainActivity.this, "successful", Toast.LENGTH_LONG).show();
+                    preferencesManager.setAuthToken(response.headers().get("access-token"));
+                    preferencesManager.setUsername(username.getText().toString());
+//                    preferencesManager.setUserId(response.body().getId());
                     Intent intent=new Intent("com.example.roman.myretrofitexample.ui.MainPageActivity");
-                    intent.putExtra("username",username.getText().toString());
-                    intent.putExtra("token",response.headers().get("access-token"));
                     startActivity(intent);
                 } else {
-                    Toast.makeText(MainActivity.this, response.body(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "successful", Toast.LENGTH_LONG).show();
+                    System.out.println(response.code());
                 }
             }
 
@@ -60,5 +60,10 @@ EditText password,username;
                 System.out.println(t.getCause());
             }
         });
+    }
+
+    public void toSignUp(View view) {
+        Intent intent=new Intent(this,RegistryActivity.class);
+        startActivity(intent);
     }
 }
